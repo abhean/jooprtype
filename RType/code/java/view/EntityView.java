@@ -22,6 +22,20 @@ public class EntityView
 	
 	/**
 	 * 
+	 */
+	public void dispose()
+	{
+		if (viewDef != null)
+		{
+			app.App.getInstance().getResourceManager().releaseResourceRef(viewDef);
+			viewDef = null;
+		}
+		
+		entity = null;
+	}
+	
+	/**
+	 * 
 	 * @param timeDelta
 	 */
 	public void update(final float timeDelta)

@@ -27,7 +27,8 @@ public class Entity
     	for (ComponentDef componentDef: entityDef.getComponentDefs())
     	{
     		Component component = componentDef.newComponent();
-    		components.put(componentDef.getType(), component);
+    		String type = componentDef.getType();
+    		components.put(type, component);
     	}
     }
 
@@ -39,7 +40,7 @@ public class Entity
     {
     	if (entityDef != null)
     	{
-    		resource.ResourceManager.getInstance().releaseResourceRef(entityDef);
+    		app.App.getInstance().getResourceManager().releaseResourceRef(entityDef);
     	}
     }
     
@@ -78,7 +79,7 @@ public class Entity
      */
     public Component getComponent(String typeName)
     {
-    	return components.get(name);
+    	return components.get(typeName);
     }
     
 	/**

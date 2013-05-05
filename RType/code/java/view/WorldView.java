@@ -4,15 +4,55 @@ import java.util.List;
 import java.util.LinkedList;
 
 import logic.Entity;
+import logic.World;
 
 public class WorldView implements logic.WorldListener
 {
-	public WorldView(logic.World world)
+	/**
+	 * 
+	 */
+	public WorldView()
 	{
 		entityViews = new LinkedList<EntityView>();
-		world.addListener(this);
+	}	
+	
+	/**
+	 * 
+	 */
+	public void dispose()
+	{
+		releaseWorld();
 	}
 	
+	/**
+	 * 
+	 * @param world
+	 */
+	public void setWorld(World world)
+	{
+		releaseWorld();
+		
+		this.world = world;
+		this.world.addListener(this);
+	}
+	
+	/**
+	 * 
+	 */
+	public void releaseWorld()
+	{
+		if (world != null)
+		{		
+			world.removeListener(this);
+			world = null;
+		}		
+		
+		for (EntityView entityView: entityViews)
+		{
+			entityView.dispose();
+		}
+		entityViews.clear();
+	}
 	
 	/**
 	 * 
@@ -33,7 +73,7 @@ public class WorldView implements logic.WorldListener
 		String entityDefId = entityDef.getName();
 		
 		// Create view
-		EntityViewDef viewDef = resource.ResourceManager.getInstance().getResourceRef(EntityViewDef.class, "assets/entityviewdefs/"+entityDefId+".xml");
+		EntityViewDef viewDef = app.App.getInstance().getResourceManager().getResourceRef(EntityViewDef.class, "assets/entityviewdefs/"+entityDefId+".xml");
 		if (viewDef != null)
 		{
 			EntityView entityView = viewDef.newEntityView(entity);
@@ -76,4 +116,5 @@ public class WorldView implements logic.WorldListener
 	
     // instance variables - replace the example below with your own
     private List<EntityView> entityViews;
+    private World world;
 }

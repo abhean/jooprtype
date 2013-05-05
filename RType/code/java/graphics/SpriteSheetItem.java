@@ -1,6 +1,7 @@
 package graphics;
 
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlElement;
 import java.util.List;
@@ -46,8 +47,8 @@ public class SpriteSheetItem
 	 */
 	public Frame getFrame(int index)
 	{
-		assert index < frameList.size();
-		return frameList.get(index);
+		assert index < frames.size();
+		return frames.get(index);
 	}
 
 	/**
@@ -59,6 +60,7 @@ public class SpriteSheetItem
 	/**
 	 * 
 	 */
+	@XmlElementWrapper
 	@XmlElement(name="frame")
-	private List<Frame> frameList;
+	private List<Frame> frames;
 }

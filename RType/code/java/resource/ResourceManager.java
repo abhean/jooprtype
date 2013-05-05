@@ -14,24 +14,14 @@ import java.io.FileNotFoundException;
  */
 public class ResourceManager 
 {
-	//---------------------------------------
-	// Singleton
-	//---------------------------------------
-	public static boolean init() { assert instance == null; instance = new ResourceManager(); return true; }
-	public static void 	  done() { assert instance != null; instance.dispose(); instance = null; }
-	
-	public static ResourceManager getInstance() { return instance; }
-	
-	private static ResourceManager instance;
-	
-	private ResourceManager()
+	public ResourceManager()
 	{
 		rootPath  = "";
 		loaders   = new HashMap<Class<?>, ResourceLoader<?>>();
 		resources = new HashMap<String, Resource>();
 	}
 	
-	private void dispose()
+	public void dispose()
 	{
 		// Log alive references
 		for (Map.Entry<String, Resource> resourceMapEntry: resources.entrySet())
@@ -76,11 +66,16 @@ public class ResourceManager
 		else
 		{
 			resource = loadResource(type, path);
+
+			if (resource != null)
+			{
+				resources.put(path, resource);
+			}
 		}
 		
 		if (resource != null)
 		{
-			addResourceRef( resource);
+			addResourceRef(resource);
 		}
 
 		return resource;
@@ -110,6 +105,20 @@ public class ResourceManager
 		if (resource.getRefs() == 0)
 		{
 			resources.values().remove(resource);
+		}
+	}
+	
+	
+	/**
+	 * 
+	 */
+	public void log()
+	{
+		System.out.println("ResourceManager.log");
+		for (String path: resources.keySet())
+		{
+			Resource resource = resources.get(path);
+			System.out.format("%s->%d\n", path, resource.getRefs());
 		}
 	}
 	
@@ -149,6 +158,7 @@ public class ResourceManager
 		
 		return resource;
 	}
+	
 	
 	//
 	private String rootPath;

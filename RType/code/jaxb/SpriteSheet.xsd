@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.org/SpriteSheet" xmlns:tns="http://www.example.org/SpriteSheet" elementFormDefault="qualified">
-
-    <element name="spriteSheetData" type="tns:SpriteSheetData"></element>
-    
-    <complexType name="SpriteSheetData">
-    	<attribute name="textureId" type="string"></attribute>
-    </complexType>
-</schema>

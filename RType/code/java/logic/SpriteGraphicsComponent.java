@@ -15,7 +15,7 @@ public class SpriteGraphicsComponent extends AbstractComponent<SpriteGraphicsCom
 	{
 		super.init(componentDef);
 		
-		spriteSheet = resource.ResourceManager.getInstance().getResourceRef(SpriteSheet.class, getComponentDef().getSpriteSheet());
+		spriteSheet = app.App.getInstance().getResourceManager().getResourceRef(SpriteSheet.class, getComponentDef().getSpriteSheet());
 	}
 	
 	@Override

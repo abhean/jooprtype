@@ -1,6 +1,8 @@
 package game;
 
-
+import javax.swing.Timer;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Stack;
 import java.util.List;
 import java.util.Map;
@@ -30,8 +32,34 @@ public class GameManager
     	// Init gamemodes
     	gameModes.put(MainMenuMode.ID, new MainMenuMode());
     	gameModes.put(IngameMode.ID, new IngameMode());
+    	
+    	timer = new Timer(33, new ActionListener() {
+    		public void actionPerformed(ActionEvent e)
+    		{
+    			update(0.033f);
+    		}
+    	});
+    	
+    	timer.start();
     }
 
+    
+    /**
+     * 
+     */
+    public void dispose()
+    {
+    	world = null;
+    	
+    	// release views
+    	for (view.WorldView worldView: worldViews)
+    	{
+    		worldView.dispose();
+    	}
+    	
+    	worldViews.clear();
+    }
+    
     /**
      * 
      * @return
@@ -46,6 +74,7 @@ public class GameManager
      */
     public void addWorldView(view.WorldView worldView)
     {
+    	worldView.setWorld(world);
     	worldViews.add(worldView);
     }
     
@@ -86,6 +115,7 @@ public class GameManager
 		return gameModes.get(Id);
 	}
 	
+	private Timer timer;
 	private World world;
 	
 	private List<view.WorldView> worldViews;

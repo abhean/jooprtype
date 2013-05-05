@@ -10,8 +10,10 @@ package graphics;
 
 import java.util.List;
 import java.awt.Image;
+
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import resource.AbstractResource;
@@ -35,11 +37,7 @@ public class SpriteSheet extends AbstractResource
 	@Override
 	public void dispose()
 	{
-		if (texture != null)
-		{
-			ResourceManager.getInstance().releaseResourceRef(texture);
-			texture = null;
-		}
+		releaseTexture();
 	}
 	
 	@XmlAttribute
@@ -84,7 +82,7 @@ public class SpriteSheet extends AbstractResource
 	{
 		SpriteSheetItem itemFound = null;
 
-		for (SpriteSheetItem item: itemList)
+		for (SpriteSheetItem item: items)
 		{
 			if (item.getName().equals(name))
 			{
@@ -102,11 +100,11 @@ public class SpriteSheet extends AbstractResource
 	 */
 	private void LoadTexture(String texturePath)
 	{
-		// @TODO[egarcia]: release previous resource
+		releaseTexture();
 		
 		if (!texturePath.isEmpty())
 		{
-			texture = ResourceManager.getInstance().getResourceRef(Texture.class, texturePath);
+			texture = app.App.getInstance().getResourceManager().getResourceRef(Texture.class, texturePath);
 		}
 		else
 		{
@@ -114,10 +112,24 @@ public class SpriteSheet extends AbstractResource
 		}
 	}
 
+
+	/**
+	 * 
+	 */
+	private void releaseTexture()
+	{
+		if (texture != null)
+		{
+			app.App.getInstance().getResourceManager().releaseResourceRef(texture);
+			texture = null;
+		}
+	}
+	
 	private String 	texturePath;
 	private Texture texture;
 
 	// @TODO[egarcia]: optimize: Map (Jaxb map adaptor?)
+	@XmlElementWrapper
 	@XmlElement(name="item")
-	private List<SpriteSheetItem> itemList;
+	private List<SpriteSheetItem> items;
 }

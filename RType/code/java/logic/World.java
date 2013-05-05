@@ -33,7 +33,7 @@ public class World
 	{
 		Entity newEntity = null;
 		
-		EntityDef entityDef = resource.ResourceManager.getInstance().getResourceRef(EntityDef.class, entityDefName);
+		EntityDef entityDef = app.App.getInstance().getResourceManager().getResourceRef(EntityDef.class, entityDefName);
 		if (entityDef != null)
 		{
 			newEntity = new Entity(name, entityDef);

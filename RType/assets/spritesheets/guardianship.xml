@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <spriteSheet texturePath="assets/textures/r-9aarrowhead.png">
-	<item name="idle">
-		<frame u="5" v="5" w="30" h="30"/>
-	</item>		
+	<items>
+		<item name="idle">
+			<frames>
+				<frame u="5" v="5" w="30" h="30"/>
+			</frames>
+		</item>		
+	</items>
 </spriteSheet>

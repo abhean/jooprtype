@@ -48,7 +48,7 @@ public class Sprite implements Item
 
 		if (spriteSheet != null)
 		{
-			resource.ResourceManager.getInstance().addResourceRef(spriteSheet);
+			app.App.getInstance().getResourceManager().addResourceRef(spriteSheet);
 
 			this.spriteSheet = spriteSheet;
 			this.spriteSheetItemId = itemId;
@@ -83,7 +83,7 @@ public class Sprite implements Item
 		{
 			imageCache = null;
 			
-			resource.ResourceManager.getInstance().releaseResourceRef(spriteSheet);
+			app.App.getInstance().getResourceManager().releaseResourceRef(spriteSheet);
 			spriteSheet = null;
 			spriteSheetItemId = null;
 		}

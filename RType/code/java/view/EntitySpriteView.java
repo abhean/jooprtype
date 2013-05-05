@@ -20,7 +20,7 @@ public class EntitySpriteView extends EntityView
 	{
 		super(entity, viewDef);
 		
-		sprite = graphics.GraphicsManager.getInstance().CreateItem(graphics.Sprite.class);
+		sprite = app.App.getInstance().getGraphicsManager().CreateItem(graphics.Sprite.class);
 	}
 	
 	
@@ -44,7 +44,7 @@ public class EntitySpriteView extends EntityView
 	{
 		if (sprite != null)
 		{
-			graphics.GraphicsManager.getInstance().DeleteItem(sprite);
+			app.App.getInstance().getGraphicsManager().DeleteItem(sprite);
 			sprite = null;
 		}
 	}
