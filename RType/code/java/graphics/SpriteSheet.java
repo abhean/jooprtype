@@ -17,7 +17,6 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import resource.AbstractResource;
-import resource.ResourceManager;
 
 @XmlRootElement
 public class SpriteSheet extends AbstractResource

@@ -26,6 +26,8 @@ public class GameManager
     	world = new World();
     	worldViews = new LinkedList<view.WorldView>();
     	
+    	players = new LinkedList<Player>();
+    	
     	gameModes = new HashMap<String, GameMode>();
     	gameModeStack = new Stack<GameMode>();
     	
@@ -97,6 +99,11 @@ public class GameManager
 	 */
 	public void update(final float timeDelta)
 	{
+		for (Player player: players)
+		{
+			player.update(timeDelta);
+		}
+		
 		world.update(timeDelta);
 		
 		for (view.WorldView view: worldViews)
@@ -122,4 +129,6 @@ public class GameManager
 	
 	private Stack<GameMode> gameModeStack;
 	private Map<String, GameMode> gameModes;
+	
+	private List<Player> players;
 }

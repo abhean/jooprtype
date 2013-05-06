@@ -1,18 +1,12 @@
 package graphics;
 
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.awt.Toolkit;
 import java.util.List;
 import java.util.LinkedList;
 
 import javax.swing.JComponent;
-import javax.swing.JFrame;
 
 
 
@@ -65,7 +59,7 @@ public class GraphicsManager
      * 
      * @param loader
      */
-    public void udpate(final float timeDelta)
+    public void update(final float timeDelta)
     {
     	
     }

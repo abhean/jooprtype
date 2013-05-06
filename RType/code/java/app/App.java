@@ -16,14 +16,14 @@ public class App
 	// managers getters
 	public graphics.GraphicsManager getGraphicsManager() { return graphicsManager; }
 	public resource.ResourceManager getResourceManager() { return resourceManager; }
-	public input.InputManager		getInputManager   () { return inputManager; }
+	public input.LogicInputMap		getInputManager   () { return inputManager; }
 	public game.GameManager			getGameManager	  () { return gameManager; }
 	
 	//---------------------------------------
 	// Singleton
 	//---------------------------------------
-	public static boolean init() { assert instance == null; instance = new App(); return true; }
-	public static void 	  done() { assert instance != null; instance.dispose(); instance = null; }
+	public static boolean init() { assert instance == null; instance = new App(); instance.instanceInit(); return true; }
+	public static void 	  done() { assert instance != null; instance.instanceDone(); instance = null; }
 	
 	public static App getInstance() { return instance; }
 	
@@ -33,6 +33,14 @@ public class App
 	 * 
 	 */
 	private App()
+	{
+
+	}
+	
+	/**
+	 * 
+	 */
+	public void instanceInit()
 	{
 		// Main Window
 		createMainWindow();
@@ -54,17 +62,17 @@ public class App
 		graphicsManager = new graphics.GraphicsManager();
 
 		// Input Manager
-		inputManager 	= new input.InputManager();
+		inputManager 	= new input.LogicInputMap();
 		
 		// Game Manager
     	gameManager = new GameManager();      
-    	gameManager.addWorldView(new view.WorldView());
+    	gameManager.addWorldView(new view.WorldView());		
 	}
 	
 	/**
 	 * 
 	 */
-	private void dispose()
+	private void instanceDone()
 	{
 		if (gameManager != null)
 		{
@@ -90,18 +98,21 @@ public class App
 			resourceManager = null;
 		}		
 	}
+	
 
 	/**
 	 * 
 	 */
 	public void update(final float timeDelta)
 	{
-		inputManager.update(timeDelta);
-		
+		// update managers
 		gameManager.update(timeDelta);
-
+		
+		inputManager.onLogicTickFinished();
+		
 		graphicsManager.update(timeDelta);
 		
+		// draw
     	mainFrame.repaint();
 	}
 	
@@ -187,7 +198,7 @@ public class App
 	//
 	private JFrame mainFrame;
 	
-	private input.InputManager		 inputManager;
+	private input.LogicInputMap		 inputManager;
 	private graphics.GraphicsManager graphicsManager;
 	private resource.ResourceManager resourceManager;
 	private game.GameManager		 gameManager;

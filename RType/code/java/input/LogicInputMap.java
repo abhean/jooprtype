@@ -1,7 +1,5 @@
 package input;
 
-import graphics.GraphicsManager;
-
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.HashMap;
@@ -16,40 +14,46 @@ import app.App;
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class InputManager
+public class LogicInputMap
 {
 	/**
 	 * 
 	 */
-	public InputManager()
+	public LogicInputMap()
 	{
 		logicInputMap = new HashMap<String, InputSource>();
 		
+		// Register keyListenerAdaptor
 		JFrame appMainFrame = App.getInstance().getMainFrame();
-		appMainFrame.addKeyListener(new KeyListener() 
+		keyListenerAdaptor = new KeyListener() 
 		{
 			@Override
 			public void keyTyped(KeyEvent keyEvent) 
 			{
-				// TODO Auto-generated method stub
-				
+				// Nothing to do
 			}
 			
 			@Override
 			public void keyReleased(KeyEvent keyEvent) 
 			{
-				// TODO Auto-generated method stub
+				for (InputSource inputSource: logicInputMap.values())
+				{
+					inputSource.keyReleased(keyEvent);
+				}
 				
 			}
 			
 			@Override
 			public void keyPressed(KeyEvent keyEvent) 
 			{
-				// TODO Auto-generated method stub
-				keyEvent.getKeyChar();
+				for (InputSource inputSource: logicInputMap.values())
+				{
+					inputSource.keyPressed(keyEvent);
+				}
 			}
-		});
-
+		};
+		
+		appMainFrame.addKeyListener(keyListenerAdaptor);
 	}
 
 	/**
@@ -57,16 +61,24 @@ public class InputManager
 	 */
 	public void dispose()
 	{
-		
+		if (keyListenerAdaptor != null)
+		{
+			JFrame appMainFrame = App.getInstance().getMainFrame();
+			appMainFrame.removeKeyListener(keyListenerAdaptor);
+			keyListenerAdaptor = null;
+		}
 	}
 	
 	/**
 	 * 
 	 * @param timeDelta
 	 */
-	public void update(final float timeDelta)
+	public void onLogicTickFinished()
 	{
-		
+		for (InputSource inputSource: logicInputMap.values())
+		{
+			inputSource.onInputConsumed();
+		}
 	}
 	
 	/**
@@ -76,7 +88,7 @@ public class InputManager
 	 */
 	public void addLogicInput(String logicInputId, InputSource inputSource)
 	{
-		
+		logicInputMap.put(logicInputId, inputSource);
 	}
 	
 	/**
@@ -86,9 +98,18 @@ public class InputManager
 	 */
 	public float getLogicInputValue(String logicInputId)
 	{
-		return 0.0f;
+		float value = 0.0f;
+		
+		InputSource inputSource = logicInputMap.get(logicInputId);
+		if (inputSource != null)
+		{
+			value = inputSource.getValue();
+		}
+		
+		return value;
 	}
 	   
     // Logic input map
     private HashMap<String, InputSource> logicInputMap;
+    private KeyListener keyListenerAdaptor;
 }
