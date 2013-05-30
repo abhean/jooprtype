@@ -55,7 +55,7 @@ public class SpriteSheet extends AbstractResource
 	/**
 	 * 
 	 */
-	Image getImage(String itemName, int frameIdx)
+	public Image getImage(String itemName, int frameIdx)
 	{
 		Image image = null;
 		
@@ -77,7 +77,7 @@ public class SpriteSheet extends AbstractResource
 	 * @param name
 	 * @return
 	 */
-	private SpriteSheetItem getItem(String name)
+	public SpriteSheetItem getItem(String name)
 	{
 		SpriteSheetItem itemFound = null;
 

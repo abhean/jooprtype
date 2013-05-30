@@ -9,11 +9,13 @@ package game;
  */
 public interface GameMode
 {
-	void Update  (float timeDelta);
+	void update  (float timeDelta);
 	
-	void OnActivated    ();
-	void OnDeactivated  ();
+	GameManager getGameManager();
 	
-	void OnPushed 		();
-	void OnPopped 		();
+	void onActivated    ();
+	void onDeactivated  ();
+	
+	void onPushed 		();
+	void onPopped 		();
 }

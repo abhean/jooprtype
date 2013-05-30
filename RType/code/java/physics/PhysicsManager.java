@@ -1,5 +1,8 @@
 package physics;
 
+import java.util.ListIterator;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Write a description of class PhysicsManager here.
@@ -9,27 +12,79 @@ package physics;
  */
 public class PhysicsManager
 {
-    // instance variables - replace the example below with your own
-    private int x;
-
     /**
      * Constructor for objects of class PhysicsManager
      */
     public PhysicsManager()
     {
-        // initialise instance variables
-        x = 0;
+    	colliders = new ArrayList<Collider>();
+    }
+    
+    
+    /**
+     * 
+     */
+    public void dispose()
+    {
+    	
+    }
+    
+    
+   
+    /**
+     * 
+     */
+    public void resolveCollisions()
+    {
+    	ListIterator<Collider> iterator = colliders.listIterator();
+    	while (iterator.hasNext())
+    	{
+    		Collider collider = iterator.next();
+    		
+        	ListIterator<Collider> otherIterator = colliders.listIterator(iterator.nextIndex());
+        	while (otherIterator.hasNext())
+        	{
+        		Collider otherCollider = otherIterator.next();
+        		if (collider.checkCollisions(otherCollider))
+        		{
+        			collider.onCollision(otherCollider);
+        			otherCollider.onCollision(collider);
+        		}
+        	}
+    	}
     }
 
     /**
-     * An example of a method - replace this comment with your own
      * 
-     * @param  y   a sample parameter for a method
-     * @return     the sum of x and y 
      */
-    public int sampleMethod(int y)
+    public <T extends Collider> T createCollider(ColliderOwner owner, final Class<T> type)
     {
-        // put your code here
-        return x + y;
+    	T collider = null;
+    	
+    	try
+		{
+    		collider = type.newInstance();
+    		collider.setOwner(owner);
+	    	colliders.add(collider);
+		} 
+    	catch (InstantiationException | IllegalAccessException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    	return collider;
     }
+    
+    /*
+     * 
+     */
+    public void deleteCollider(Collider collider)
+    {
+    	//collider.dispose();
+    	colliders.remove(collider);
+    }
+    
+    
+	private List<Collider> colliders;
 }

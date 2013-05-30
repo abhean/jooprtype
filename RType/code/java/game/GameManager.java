@@ -1,14 +1,13 @@
 package game;
 
-import javax.swing.Timer;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Stack;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.LinkedList;
-import logic.World;
+
+import model.World;
+import model.World.State;
 
 /**
  * Write a description of class GameManager here.
@@ -26,23 +25,15 @@ public class GameManager
     	world = new World();
     	worldViews = new LinkedList<view.WorldView>();
     	
-    	players = new LinkedList<Player>();
+    	players = new LinkedList<PlayerController>();
     	
     	gameModes = new HashMap<String, GameMode>();
     	gameModeStack = new Stack<GameMode>();
     	
     	// Init gamemodes
-    	gameModes.put(MainMenuMode.ID, new MainMenuMode());
-    	gameModes.put(IngameMode.ID, new IngameMode());
-    	
-    	timer = new Timer(33, new ActionListener() {
-    		public void actionPerformed(ActionEvent e)
-    		{
-    			update(0.033f);
-    		}
-    	});
-    	
-    	timer.start();
+    	gameModes.put(MainMenuMode.ID, new MainMenuMode(this));
+    	gameModes.put(IngameMode.ID, new IngameMode(this));    	
+    	gameModes.put(GameOverMode.ID, new GameOverMode(this));
     }
 
     
@@ -66,7 +57,7 @@ public class GameManager
      * 
      * @return
      */
-    public World getEntityManager()
+    public World getWorld()
     {
     	return world;
     }
@@ -76,8 +67,64 @@ public class GameManager
      */
     public void addWorldView(view.WorldView worldView)
     {
-    	worldView.setWorld(world);
+    	worldView.init(world);
     	worldViews.add(worldView);
+    }
+    
+    /**
+     * 
+     */
+    public void deleteWorldView(view.WorldView worldView)
+    {
+    	worldView.dispose();
+    	worldViews.remove(worldView);
+    }
+    
+    /**
+     * 
+     */
+    public void loadLevel(String levelDefPath)
+    {
+    	world.loadLevel(levelDefPath);
+    }
+    
+    /**
+     * 
+     */
+    public void addPlayerController(PlayerController playerController)
+    {
+    	players.add(playerController);
+    }
+    
+    
+    /**
+     * 
+     */
+    public void popAllGameModes()
+    {
+    	while (!gameModeStack.isEmpty())
+    	{
+    		GameMode gameMode = gameModeStack.pop();
+    		assert gameMode != null;
+    		
+    		gameMode.onDeactivated();
+    		gameMode.onPopped();
+    	}
+    }
+    
+    /**
+     * 
+     */
+    public void popGameMode()
+    {
+    	if (!gameModeStack.isEmpty())
+    	{
+    		GameMode gameMode = gameModeStack.pop();
+    		assert gameMode != null;
+    		
+    		gameMode.onDeactivated();
+    		gameMode.onPopped();
+    	}
     }
     
     /**
@@ -90,7 +137,16 @@ public class GameManager
     	if (gameMode != null)
     	{
         	assert !gameModeStack.contains(gameMode);
+        	
+        	if (!gameModeStack.isEmpty())
+        	{
+        		GameMode currentMode = gameModeStack.peek();
+        		currentMode.onDeactivated();
+        	}
+        	
 	    	gameModeStack.push(gameMode);
+	    	gameMode.onPushed();
+	    	gameMode.onActivated();
     	}
     }
     
@@ -99,17 +155,70 @@ public class GameManager
 	 */
 	public void update(final float timeDelta)
 	{
-		for (Player player: players)
+		GameMode currentMode = getCurrentGameMode();
+		if (currentMode != null)
+		{
+			currentMode.update(timeDelta);
+		}
+	}
+	
+	/**
+	 * 
+	 * @param timeDelta
+	 */
+	public void setPlayerControllersActive(boolean active)
+	{
+		for (PlayerController player: players)
+		{
+			player.setActive(active);
+		}
+	}
+	
+	/**
+	 * 
+	 * @param timeDelta
+	 */
+	public void updatePlayerControllers(final float timeDelta)
+	{
+		for (PlayerController player: players)
 		{
 			player.update(timeDelta);
 		}
-		
+	}
+	
+	/**
+	 * 
+	 */
+	public void updateWorld(final float timeDelta)
+	{
 		world.update(timeDelta);
-		
+	}
+	
+	/**
+	 * 
+	 */
+	public void updateWorldViews(final float timeDelta)
+	{
 		for (view.WorldView view: worldViews)
 		{
 			view.update(timeDelta);
 		}
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public GameMode getCurrentGameMode()
+	{
+		GameMode current = null;
+		
+		if (!gameModeStack.isEmpty())
+		{
+			current = gameModeStack.peek();
+		}
+		
+		return current;
 	}
 	
 	/**
@@ -122,7 +231,6 @@ public class GameManager
 		return gameModes.get(Id);
 	}
 	
-	private Timer timer;
 	private World world;
 	
 	private List<view.WorldView> worldViews;
@@ -130,5 +238,5 @@ public class GameManager
 	private Stack<GameMode> gameModeStack;
 	private Map<String, GameMode> gameModes;
 	
-	private List<Player> players;
+	private List<PlayerController> players;
 }

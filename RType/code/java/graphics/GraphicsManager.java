@@ -1,14 +1,12 @@
 package graphics;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Toolkit;
 import java.util.List;
 import java.util.LinkedList;
 
 import javax.swing.JComponent;
-
-
 
 /**
  * Write a description of class CEngine here.
@@ -26,24 +24,35 @@ public class GraphicsManager
     	items = new LinkedList<Item>();
     	
     	// JComponent Adaptor
-    	JComponent screen = new JComponent()
+    	screen = new JComponent()
 		{
-      	  public void paint(Graphics graphics)
+    	  @Override
+      	  protected void paintComponent(Graphics graphics)
       	  {
   		    Graphics2D graphics2d = (Graphics2D) graphics;
 
+  		    graphics2d.setColor(new Color(0.0f, 0.0f, 0.0f));
+  		    graphics2d.fillRect(0, 0, getWidth(), getHeight());
+
   		    for (Item item: items)
   		    {
-  		    	item.Draw(graphics2d);
+  		    	item.draw(graphics2d);
   		    }
-
-  		    Toolkit.getDefaultToolkit().sync();
+  		    
+  		    graphics2d.dispose();
       	  }
 		};
 		
+    	javax.swing.JFrame mainFrame = app.App.getInstance().getMainFrame();
+
+    	screen.setFocusable(false);
+    	screen.setBounds(0, 0, mainFrame.getWidth(), mainFrame.getHeight());
     	screen.setDoubleBuffered(true);
-    			
-    	app.App.getInstance().getMainFrame().add(screen);
+    	
+    	mainFrame.add(screen);
+
+    	mainFrame.validate();
+    	mainFrame.repaint();
     }
     
     /**
@@ -61,10 +70,20 @@ public class GraphicsManager
      */
     public void update(final float timeDelta)
     {
-    	
+    	screen.repaint();
     }
     
 
+    /**
+     * 
+     * @return
+     */
+    public JComponent getScreen()
+    {
+    	return screen;
+    }
+    
+    
     /**
      * 
      */
@@ -89,7 +108,7 @@ public class GraphicsManager
     /*
      * 
      */
-    public void DeleteItem(Item item)
+    public void deleteItem(Item item)
     {
     	//item.dispose();
     	items.remove(item);
@@ -99,4 +118,5 @@ public class GraphicsManager
     // Instance variables
     //----------------------------------------------
     private List<Item> items;
+    private JComponent screen;
 }

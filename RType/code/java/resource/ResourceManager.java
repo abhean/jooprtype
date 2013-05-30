@@ -6,6 +6,7 @@ import java.util.Map;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 
 
 /**
@@ -134,21 +135,21 @@ public class ResourceManager
 		ResourceLoader<?> loader = loaders.get(type);
 		if (loader != null)
 		{
-			try
+			InputStream inputStream;
+			
+			String fullQualifiedPath = rootPath + resourcePath;
+			
+			//inputStream = new FileInputStream(fullQualifiedPath);
+			inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(fullQualifiedPath);
+			if (inputStream != null)
 			{
-				FileInputStream inputStream;
-				
-				String fullQualifiedPath = rootPath + resourcePath;
-				inputStream = new FileInputStream(fullQualifiedPath);
-				
 				//@SuppressWarnings("unchecked")
 				resource = (T)loader.load(inputStream);
 				resource.onLoaded();
-			} 
-			catch (FileNotFoundException e)
+			}
+			else
 			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.err.printf("No file for path '%s'", fullQualifiedPath);
 			}
 		}
 		else

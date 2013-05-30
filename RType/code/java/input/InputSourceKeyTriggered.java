@@ -16,6 +16,14 @@ public class InputSourceKeyTriggered implements InputSource
 		bTriggered = false;
 	}
 	
+
+	@Override
+	public void reset()
+	{
+		bTriggered = false;
+	}
+	
+	
 	@Override
 	public float getValue() 
 	{

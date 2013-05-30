@@ -7,6 +7,7 @@ public interface InputSource
 	float getValue();
 	
 	void onInputConsumed();
+	void reset();
 	
 	// Events
 	void keyReleased(final KeyEvent keyEvent);

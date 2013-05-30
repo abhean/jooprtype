@@ -14,9 +14,6 @@ public class Sprite implements Item
 	public Sprite()
 	{
 		spriteSheet = null;
-		spriteSheetItemId = null;
-		transform = new AffineTransform();
-		
 		imageCache = null;
 	}
 	
@@ -28,21 +25,32 @@ public class Sprite implements Item
 		releaseSpriteSheetItem();
 	}
 
+	@Override
+	public void update(float timeDelta)
+	{
+		// TODO Auto-generated method stub
+		
+	} 
+	
 	/**
 	 * 
 	 * @param graphics2d
 	 */
-	@Override public void Draw(Graphics2D graphics2d)
+	@Override public void draw(Graphics2D graphics2d)
 	{
-		assert spriteSheet != null && spriteSheetItemId != null;
+		assert imageCache != null;
 
-		graphics2d.drawImage(imageCache, 0, 0, null);
+		AffineTransform transform = new AffineTransform();
+		transform.concatenate(AffineTransform.getRotateInstance(rotation));
+		transform.concatenate(AffineTransform.getTranslateInstance(position.x, position.y));
+		
+		graphics2d.drawImage(imageCache, transform, null);
 	}
 
 	/**
 	 * 
 	 */
-	public void SetSpriteSheetItem(SpriteSheet spriteSheet, String itemId)
+	public void setSpriteSheetItem(SpriteSheet spriteSheet, String itemId)
 	{
 		releaseSpriteSheetItem();
 
@@ -51,8 +59,6 @@ public class Sprite implements Item
 			app.App.getInstance().getResourceManager().addResourceRef(spriteSheet);
 
 			this.spriteSheet = spriteSheet;
-			this.spriteSheetItemId = itemId;
-			
 			this.imageCache = spriteSheet.getImage(itemId, 0);
 		}
 	}
@@ -64,11 +70,17 @@ public class Sprite implements Item
 	/**
 	 * 
 	 */
-	public void SetPosition(Point2D position)
+	public void setPosition(Point2D.Float position)
 	{
-		// @TODO[egarcia]: 
-		Point2D delta = new Point2D.Double(position.getX() - transform.getTranslateX(), position.getY() - transform.getTranslateY());
-		transform.translate(delta.getX(), delta.getY());
+		this.position = (Point2D.Float)position.clone();
+	}
+	
+	/**
+	 * 
+	 */
+	public void setRotation(float rotation)
+	{
+		this.rotation = rotation;
 	}
 	
 	
@@ -85,17 +97,15 @@ public class Sprite implements Item
 			
 			app.App.getInstance().getResourceManager().releaseResourceRef(spriteSheet);
 			spriteSheet = null;
-			spriteSheetItemId = null;
 		}
 	}
 	
 	//------------------------------------------------
 	// Instance variables
 	//------------------------------------------------
-	private SpriteSheet 	spriteSheet;
-	private String			spriteSheetItemId;
-	private AffineTransform transform;
+	private SpriteSheet spriteSheet;
+	private Point2D.Float position;
+	private float rotation;
 	
-	private Image imageCache; 
-	
+	private Image imageCache;
 }

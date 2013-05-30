@@ -16,6 +16,12 @@ public class InputSourceKeyPressed implements InputSource
 	{
 		
 	}
+	
+	@Override
+	public void reset()
+	{
+		this.bPressed = false;
+	}
 
 	@Override
 	public float getValue() 

@@ -11,5 +11,6 @@ import java.awt.Graphics2D;
  */
 public interface Item
 {
-	public void Draw	   (Graphics2D graphics2d); 
+	public void update	   (final float timeDelta);
+	public void draw	   (Graphics2D graphics2d); 
 }

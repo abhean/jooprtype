@@ -23,8 +23,7 @@ public class LogicInputMap
 	{
 		logicInputMap = new HashMap<String, InputSource>();
 		
-		// Register keyListenerAdaptor
-		JFrame appMainFrame = App.getInstance().getMainFrame();
+		// Create keyListenerAdaptor
 		keyListenerAdaptor = new KeyListener() 
 		{
 			@Override
@@ -51,9 +50,7 @@ public class LogicInputMap
 					inputSource.keyPressed(keyEvent);
 				}
 			}
-		};
-		
-		appMainFrame.addKeyListener(keyListenerAdaptor);
+		};		
 	}
 
 	/**
@@ -61,11 +58,45 @@ public class LogicInputMap
 	 */
 	public void dispose()
 	{
-		if (keyListenerAdaptor != null)
+		setActive(false);
+		keyListenerAdaptor = null;
+	}
+	
+	
+	/**
+	 * 
+	 * @param active
+	 */
+	public void setActive(boolean active)
+	{
+		JFrame appMainFrame = App.getInstance().getMainFrame();
+		
+		if (active != this.active)
 		{
-			JFrame appMainFrame = App.getInstance().getMainFrame();
-			appMainFrame.removeKeyListener(keyListenerAdaptor);
-			keyListenerAdaptor = null;
+			this.active = active;
+
+			if (this.active)
+			{
+				resetInputSources();
+				appMainFrame.addKeyListener(keyListenerAdaptor);
+			}
+			else
+			{
+				appMainFrame.removeKeyListener(keyListenerAdaptor);
+			}
+		}
+	}
+	
+	
+	/**
+	 * 
+	 * @param timeDelta
+	 */
+	public void resetInputSources()
+	{
+		for (InputSource inputSource: logicInputMap.values())
+		{
+			inputSource.reset();
 		}
 	}
 	
@@ -112,4 +143,5 @@ public class LogicInputMap
     // Logic input map
     private HashMap<String, InputSource> logicInputMap;
     private KeyListener keyListenerAdaptor;
+    private boolean active;
 }
