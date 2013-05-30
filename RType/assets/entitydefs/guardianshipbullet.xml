@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entityDef name="guardianshipbullet" type="bullet">
+	<componentDefs>
+		<simpleLocationComponentDef  />
+		<projectileBrainComponentDef damageOnCollision="25.0" />
+		<spriteGraphicsComponentDef spriteSheet="assets/spritesheets/guardianshipbullet.xml" itemId="idle"/>
+		<spriteCollisionComponentDef checkPixels="true" />		
+		<inertialMovementComponentDef mass="1.0" maxSpeed="500.0" maxAccel="100000.0" damping="0.0" worldLimitsCollision="false" />
+	</componentDefs>
+</entityDef>

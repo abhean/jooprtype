@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entityDef name="alienshiphard" type="enemy" >
+	<componentDefs>
+		<simpleLocationComponentDef  />
+		<simpleLifeComponentDef maxLife="50.0" />
+		<alienBrainComponentDef verticalMovementAmplitude="0.1" verticalMovementFrequency="5.0" />
+		<alienRewardComponentDef onKilledPoints="200" onDamagedPoints="20" />
+		<spriteGraphicsComponentDef spriteSheet="assets/spritesheets/alienshiphard.xml" itemId="idle"/>
+		<spriteCollisionComponentDef checkPixels="true" />
+		<inertialMovementComponentDef mass="1.0" maxSpeed="500.0" maxAccel="10000.0" damping="5.0" worldLimitsCollision="false" />
+	</componentDefs>
+</entityDef>

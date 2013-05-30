@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entityDef name="alienship" type="enemy" >
+	<componentDefs>
+		<simpleLocationComponentDef  />
+		<simpleLifeComponentDef maxLife="25.0" />
+		<alienBrainComponentDef verticalMovementAmplitude="0.0" verticalMovementFrequency="0.0" />
+		<alienRewardComponentDef onKilledPoints="100" onDamagedPoints="10" />
+		<spriteGraphicsComponentDef spriteSheet="assets/spritesheets/alienship.xml" itemId="idle"/>
+		<spriteCollisionComponentDef checkPixels="true" />
+		<inertialMovementComponentDef mass="1.0" maxSpeed="400.0" maxAccel="10000.0" damping="2.0" worldLimitsCollision="false" />
+	</componentDefs>
+</entityDef>

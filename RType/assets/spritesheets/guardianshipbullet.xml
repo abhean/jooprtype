@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<spriteSheet texturePath="assets/textures/r-9aarrowhead.png">
+<spriteSheet texturePath="assets/textures/bullet.png">
 	<items>
 		<item name="idle">
 			<frames>
-				<frame u="5" v="5" w="30" h="30"/>
+				<frame u="0" v="0" w="32" h="40"/>
 			</frames>
 		</item>		
 	</items>

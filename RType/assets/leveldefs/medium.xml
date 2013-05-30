@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<levelDef 
+	hardShipsRatio="0.25" 
+	numAliensToSpawn="15" 
+	numAliensToDestroy="15" 
+	maxActiveAliens="5" 
+	minTimeBetweenSpawns="1.5" 
+	alienShipsSpeedFactor="0.75"
+/>

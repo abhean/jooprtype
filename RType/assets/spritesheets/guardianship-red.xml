@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<spriteSheet texturePath="assets/textures/guardianship-red.png">
+	<items>
+		<item name="idle">
+			<frames>
+				<frame u="134" v="0" w="65" h="33"/>
+			</frames>
+		</item>		
+	</items>
+</spriteSheet>

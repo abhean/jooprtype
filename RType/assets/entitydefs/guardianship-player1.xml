@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entityDef name="guardianship-player1" type="player">
+	<componentDefs>
+		<simpleLocationComponentDef />
+		<playerBrainComponentDef/>
+		<simpleLifeComponentDef maxLife="100.0" />
+		<spriteGraphicsComponentDef spriteSheet="assets/spritesheets/guardianship-blue.xml" itemId="idle"/>
+		<spriteCollisionComponentDef checkPixels="true" />
+		<inertialMovementComponentDef mass="1.0" maxSpeed="225.0" maxAccel="100000.0" damping="5.0" worldLimitsCollision="true" />
+		<simpleShooterComponentDef projectileEntityDef="assets/entitydefs/guardianshipbullet.xml" minTimeBetweenShots="0.25">
+			<shotOffset x="20.0" y="0.0" />
+		</simpleShooterComponentDef>
+	</componentDefs>
+</entityDef>

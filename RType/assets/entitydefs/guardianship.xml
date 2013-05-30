@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<entityDef name="guardianship">
-	<componentDefs>
-		<spriteGraphicsComponentDef spriteSheet="assets/spritesheets/guardianship.xml" itemId="idle"/>
-	</componentDefs>
-</entityDef>
